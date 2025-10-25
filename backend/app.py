@@ -3,6 +3,7 @@ from flask import Flask
 from models import db, init_db
 from config.databases import Config  # sửa import
 from routes.user_routes import user_bp
+from routes.group_routes import group_bp
 
 def create_app():
     app = Flask(__name__)
@@ -13,6 +14,7 @@ def create_app():
 
     # Đăng ký blueprint (prefix /users)
     app.register_blueprint(user_bp, url_prefix='/user_bp')
+    app.register_blueprint(group_bp, url_prefix='/group_bp')
 
     # Dùng init_db từ models (mức an toàn hơn với việc import models)
     init_db(app)
