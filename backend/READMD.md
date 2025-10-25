@@ -9,3 +9,69 @@
 
 ## Kiểm tra nhanh khi gặp lỗi
 1. Kiểm tra cấu trúc table:
+
+
+
+# ER Diagram — Quan hệ giữa các thực thể
+
+Dưới đây là sơ đồ ER (Mermaid). Mở file này trong VS Code với extension Mermaid Preview hoặc xem trên GitHub để hiển thị đồ họa.
+
+```mermaid
+erDiagram
+    USERS {
+        int id PK
+        string name
+        string email
+    }
+
+    GROUPS {
+        int id PK
+        string name
+        text description
+        int created_by FK -> USERS.id
+    }
+
+    EXPENSES {
+        int id PK
+        int group_id FK -> GROUPS.id
+        int paid_by FK -> USERS.id
+        decimal amount
+    }
+
+    EXPENSE_SHARES {
+        int id PK
+        int expense_id FK -> EXPENSES.id
+        int user_id FK -> USERS.id
+    }
+
+    PAYMENTS {
+        int id PK
+        int group_id FK -> GROUPS.id
+        int payer_id FK -> USERS.id
+        int receiver_id FK -> USERS.id
+        decimal amount
+    }
+
+    SETTLEMENTS {
+        int id PK
+        int group_id FK -> GROUPS.id
+        int payer_id FK -> USERS.id
+        int receiver_id FK -> USERS.id
+        decimal amount
+        string status
+    }
+
+    USERS ||--o{ GROUPS : "created_by"
+    GROUPS ||--o{ EXPENSES : "group_id"
+    EXPENSES ||--o{ EXPENSE_SHARES : "expense_id"
+    USERS ||--o{ EXPENSE_SHARES : "user_id"
+    GROUPS ||--o{ PAYMENTS : "group_id"
+    USERS ||--o{ PAYMENTS : "payer / receiver"
+    GROUPS ||--o{ SETTLEMENTS : "group_id"
+    USERS ||--o{ SETTLEMENTS : "payer / receiver"
+```
+
+Giải thích ngắn:
+- ||--o{ : quan hệ 1 (||) — N (o{).
+- Mỗi bảng có các FK trỏ về bảng USERS hoặc GROUPS hoặc EXPENSES như trong sơ đồ.
+- Đảm bảo chèn dữ liệu theo thứ tự hợp lệ (USERS → GROUPS → EXPENSES → EXPENSE_SHARES / PAYMENTS / SETTLEMENTS) để tránh lỗi FK.
