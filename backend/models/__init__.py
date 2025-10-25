@@ -11,3 +11,6 @@ from .expense import Expense
 from .expense_share import ExpenseShare
 from .payment import Payment
 from .settlement import Settlement
+
+def init_db(app):
+    db.init_app(app)
